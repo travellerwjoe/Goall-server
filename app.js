@@ -1,11 +1,13 @@
 const Koa = require('koa')
+const compose = require('koa-compose')
 const config = require('./config')
 const { loggerMiddleware, responseTimeMiddleware } = require('./middlewares')
 
 const app = new Koa()
 
-app.use(loggerMiddleware)
-app.use(responseTimeMiddleware)
+const middlewares = compose([loggerMiddleware, responseTimeMiddleware])
+
+app.use(middlewares)
 
 app.use(async ctx => {
     console.log(ctx.response)
