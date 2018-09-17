@@ -2,6 +2,7 @@ const Koa = require('koa')
 const compose = require('koa-compose')
 const config = require('./config')
 const { loggerMiddleware, responseTimeMiddleware } = require('./middlewares')
+const router = require('./routes')
 
 const app = new Koa()
 
@@ -9,8 +10,9 @@ const middlewares = compose([loggerMiddleware, responseTimeMiddleware])
 
 app.use(middlewares)
 
+app.use(router.routes(), router.allowedMethods())
+
 app.use(async ctx => {
-    console.log(ctx.response)
     ctx.body = 'You are visiting Goall API service.'
 })
 
