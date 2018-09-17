@@ -1,14 +1,31 @@
 const Koa = require('koa')
 const compose = require('koa-compose')
+const jwt = require('koa-jwt')
+const bodyparser = require('koa-bodyparser')
 const config = require('./config')
-const { loggerMiddleware, responseTimeMiddleware } = require('./middlewares')
 const router = require('./routes')
+const {
+    loggerMiddleware,
+    responseTimeMiddleware,
+    authMiddleware,
+} = require('./middlewares')
 
 const app = new Koa()
 
-const middlewares = compose([loggerMiddleware, responseTimeMiddleware])
+const middlewares = compose([loggerMiddleware, responseTimeMiddleware, authMiddleware])
 
 app.use(middlewares)
+
+app.use(bodyparser({
+    enableTypes: ['json', 'form', 'text']
+}))
+
+app.use(jwt({ secret: config.secret }).unless({
+    path: [
+        //todo: will be changed later
+        /\/auth\/.*/,
+    ],
+}))
 
 app.use(router.routes(), router.allowedMethods())
 
