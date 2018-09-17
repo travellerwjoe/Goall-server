@@ -2,6 +2,7 @@ const Koa = require('koa')
 const compose = require('koa-compose')
 const jwt = require('koa-jwt')
 const bodyparser = require('koa-bodyparser')
+const cors = require('@koa/cors')
 const config = require('./config')
 const router = require('./routes')
 const {
@@ -15,6 +16,8 @@ const app = new Koa()
 const middlewares = compose([loggerMiddleware, responseTimeMiddleware, authMiddleware])
 
 app.use(middlewares)
+
+app.use(cors())
 
 app.use(bodyparser({
     enableTypes: ['json', 'form', 'text']
