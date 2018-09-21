@@ -1,9 +1,6 @@
 const Router = require('koa-router')
-const AuthController = require('../controllers/auth')
-
 const router = new Router()
-const auth = new AuthController()
+require('./auth')(router)
 
-router.post('/auth/login', auth.login)
 
 module.exports = router

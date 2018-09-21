@@ -10,6 +10,7 @@ const {
     responseTimeMiddleware,
     authMiddleware,
 } = require('./middlewares')
+require('./db')
 
 const app = new Koa()
 
