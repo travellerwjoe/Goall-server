@@ -9,8 +9,12 @@ class UserModel extends Model {
     constructor() {
         super()
     }
-    async register(data) {
-        const user = new User(data)
+    async login({ username, password }) {
+        return User.findOne({ username, password })
+    }
+    async register(payload) {
+        const user = new User(payload)
+        const error = user.validateSync()
         return await user.save()
         // return this.promise((resolve, reject) => {
         //     return user.save()

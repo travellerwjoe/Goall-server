@@ -45,4 +45,16 @@ userSchema.virtual('lastLoginTimeFormat').get(function () {
     return this.lastLoginTime && DateTime.fromMillis(this.lastLoginTime).toFormat('yyyy-MM-dd HH:mm:ss')
 })
 
+userSchema.path('username').validate(function (value) {
+    return new Promise((resolve, reject) => {
+        this.model('User').countDocuments({ username: value }, function (err, count) {
+            if (err) {
+                reject(err)
+            }
+            resolve(!count)
+        })
+    })
+
+}, 'username `{VALUE}` already exists')
+
 module.exports = userSchema
