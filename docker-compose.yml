@@ -1,0 +1,12 @@
+version: "3.3"
+
+services:
+  goall-server:
+    restart: always
+    image: goall-server
+    expose: 
+      - "8000"
+    ports: 
+      - "8000:8000"
+    # environment:
+      # -
