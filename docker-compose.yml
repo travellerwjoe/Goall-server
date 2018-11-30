@@ -4,9 +4,37 @@ services:
   goall-server:
     restart: always
     image: goall-server
+    build: 
+      context: ./
     expose: 
-      - "8000"
+      - $GOALL_SERVER_PORT
     ports: 
-      - "8000:8000"
-    # environment:
-      # -
+      - $GOALL_SERVER_PORT:$GOALL_SERVER_PORT
+    links:
+      - mongo
+    depends_on:
+      - mongo
+    environment:
+      - GOALL_SERVER_PORT=$GOALL_SERVER_PORT
+      - GOALL_DB_HOST=$GOALL_DB_HOST
+      - GOALL_DB_PORT=$GOALL_DB_PORT
+      - GOALL_DB_NAME=$GOALL_DB_NAME
+      - GOALL_DB_USER=$GOALL_DB_USER
+      - GOALL_DB_PASS=$GOALL_DB_PASS
+    volumes:
+      - ./src:/root/goall-server/code/src
+  mongo:
+    restart: always
+    image: mongo
+    environment: 
+      - MONGO_INITDB_ROOT_USERNAME=$GOALL_DB_USER
+      - MONGO_INITDB_ROOT_PASSWORD=$GOALL_DB_PASS
+      - MONGO_INITDB_DATABASE=$GOALL_DB_NAME
+    expose: 
+      - "$GOALL_DB_PORT"
+    ports: 
+      - "$GOALL_DB_PORT:$GOALL_DB_PORT"
+    volumes:
+      - ./data:/data/db
+      # - ./data/db:/data/db
+  

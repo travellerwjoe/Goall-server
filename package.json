@@ -8,6 +8,7 @@
     "start": "npm run dev-mac",
     "dev-mac": "export NODE_ENV=development&& nodemon app",
     "dev-win": "set NODE_ENV=development&& nodemon app",
+    "build-image": "docker build -t goall-server .",
     "goall-image": "docker build -f ./docker/goall-image/Dockerfile -t trajoewu/goall-image ."
   },
   "author": "Joe Wu",
